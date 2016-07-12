@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Wolf
- * Date: 7/11/2016
- * Time: 12:33
- */
 
 namespace CrazyFactory\Utils;
-
 
 use CrazyFactory\Utils\Base\SqlQuery;
 
@@ -15,8 +8,8 @@ class SqlInsertQuery extends SqlQuery
 {
 
 	/**
-	 * @param array[] $data_list
-	 * @param string $table_name
+	 * @param array[]         $data_list
+	 * @param string          $table_name
 	 * @param string|string[] $omit_keys A key or list of keys you want to ignore within the data.
 	 *
 	 * @return int
@@ -38,12 +31,14 @@ class SqlInsertQuery extends SqlQuery
 		$columns = Arrays::getElementKeys($data_list);
 
 		// Strip omitted keys from columns
-		$omit_keys = is_array($omit_keys) ? $omit_keys : array($omit_keys);
+		$omit_keys = is_array($omit_keys)
+			? $omit_keys
+			: array($omit_keys);
 		$columns = array_diff($columns, $omit_keys);
 
 		$columns_strings = $columns;
 		foreach ($columns_strings as &$column_string) {
-			$column_string = '`'.$column_string.'`';
+			$column_string = '`' . $column_string . '`';
 		}
 
 		// Build INSERT INTO ... VALUES clause
@@ -55,7 +50,7 @@ class SqlInsertQuery extends SqlQuery
 			$data_values = [];
 			foreach ($columns as $column) {
 				if (!key_exists($column, $data)) {
-					throw new \Exception("missing data value for column '".$column."'");
+					throw new \Exception("missing data value for column '" . $column . "'");
 				}
 				$data_values[] = self::escapeValue($data[$column]);
 			}
@@ -65,6 +60,7 @@ class SqlInsertQuery extends SqlQuery
 
 		// Append/Concat all data set strings
 		$sql .= ' VALUES ' . implode(', ', $data_list_values) . ';';
+
 		return $sql;
 	}
 }

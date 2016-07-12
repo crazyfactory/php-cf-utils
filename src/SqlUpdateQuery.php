@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Wolf
- * Date: 7/11/2016
- * Time: 12:42
- */
 
 namespace CrazyFactory\Utils;
-
 
 use CrazyFactory\Utils\Base\SqlQuery;
 
@@ -19,7 +12,7 @@ class SqlUpdateQuery extends SqlQuery
 	 * @param array[] $data_list
 	 * @param bool    $treat_as_dictionary
 	 *
-	 * @return null|string Returns a query string or null if none of the models needs updating.
+	 * @return null|string Returns a sql update query. Will return null if data_list is empty-ish
 	 * @throws \Exception
 	 */
 	public static function buildBulk($table_name, $table_primary_key, $data_list, $treat_as_dictionary = false)
@@ -106,7 +99,7 @@ class SqlUpdateQuery extends SqlQuery
 			}
 
 			// Add to list in correct format => `name` = CASE `id` THEN "Bob" ELSE `name` END
-			$cases[] = "`$column` = CASE `$table_primary_key` ".implode(' ', $when_clauses)." ELSE `$column` END";
+			$cases[] = "`$column` = CASE `$table_primary_key` " . implode(' ', $when_clauses) . " ELSE `$column` END";
 		}
 
 		return $cases;

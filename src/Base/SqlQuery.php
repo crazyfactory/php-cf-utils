@@ -11,6 +11,11 @@ namespace CrazyFactory\Utils\Base;
 
 class SqlQuery
 {
+	/**
+	 * @param mixed $value
+	 *
+	 * @return mixed
+	 */
 	public static function escapeValue($value) {
 		if (is_int($value) || is_null($value)) {
 			return $value;
