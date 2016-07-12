@@ -17,12 +17,14 @@ General
 ## Usage
 
 - add a custom repository to your composer.json file
-  ```"repositories": [
+  ```
+  "repositories": [
    {
      "type": "vcs",
      "url": "https://github.com/crazyfactory/php-cf-utils"
    }
-  ]```
+  ]
+  ```
 
 - run ```composer require crazyfactory/php-cf-utils```
 
