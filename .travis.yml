@@ -13,8 +13,6 @@ matrix:
   - php: nightly
   - php: hhvm
 
-  fast_finish: true
-
   allow_failures:
   - php: nightly
   - php: 7.0
@@ -34,11 +32,6 @@ before_script:
 
 script:
   - composer test
-  - if [ $? -eq 0 ]; then
-      echo "Happy face :)";
-    else
-      exit 1;
-    fi
   - if [ $PROCESS_LINT = true ]; then
       composer lint;
     else
