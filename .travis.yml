@@ -31,11 +31,8 @@ before_script:
   - travis_retry composer update --prefer-dist
 
 script:
-  - if [ $PROCESS_LINT = true ]; then
-      composer test && composer lint;
-    else
-      composer test;
-    fi
+  - composer test
+  - if [ -z "$PROCESS_LINT" ]; then composer lint; fi
 
 cache:
   directories:
