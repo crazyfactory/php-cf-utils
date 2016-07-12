@@ -36,7 +36,9 @@ script:
   - composer update
   - composer test
   - if [ $PROCESS_LINT = true ]; then
-       composer lint
+       composer lint;
+    else
+      exit 0;
     fi
 
 cache:
