@@ -35,6 +35,9 @@ before_script:
 script:
   - composer update
   - composer test
+  - if [ $PROCESS_LINT = true ]; then
+       composer lint
+    fi
 
 cache:
   directories:

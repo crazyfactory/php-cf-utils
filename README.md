@@ -1,10 +1,10 @@
-# php-cf-utils
+# CrazyFactory\Utils for PHP
 
 A library revolving around repetitive and recurring tasks.
 
-| branch | status |
-| --- | --- |
-| master | [![Build Status](https://travis-ci.org/crazyfactory/php-cf-utils.svg?branch=master)](https://travis-ci.org/crazyfactory/php-cf-utils) |
+| master |
+| --- |
+| [![Build Status](https://travis-ci.org/crazyfactory/php-cf-utils.svg?branch=master)](https://travis-ci.org/crazyfactory/php-cf-utils) |
 
 ## Features
 
