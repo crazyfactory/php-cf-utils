@@ -16,9 +16,9 @@ class SqlDeleteQueryTest extends \PHPUnit_Framework_TestCase
 	public function providerForTestBuildBuild() {
 		return array(
 			array('users', 'id', array(1, 4, 17, 28),
-			      'DELETE FROM `'.users.'` WHERE `id` IN (1, 4, 17, 28);'),
+			      'DELETE FROM `users` WHERE `id` IN (1, 4, 17, 28);'),
 			array('posts', 'post_id', array(1, 3, 2),
-			      'DELETE FROM `'.users.'` WHERE `id` IN (1, 3, 2);'),
+			      'DELETE FROM `posts` WHERE `post_id` IN (1, 3, 2);'),
 			array('posts', 'post_id', array(), null),
 			array('posts', 'post_id', null, null)
 		);
