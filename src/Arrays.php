@@ -20,7 +20,9 @@ class Arrays
 	{
 		$keys = [];
 		foreach ($list as $item) {
-			$keys += array_keys($item);
+			if ($item !== null) {
+				$keys = array_merge($keys, array_keys($item));
+			}
 		}
 
 		$keys = array_unique($keys);

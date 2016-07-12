@@ -9,18 +9,20 @@
 namespace CrazyFactory\Utils;
 
 
-class SqlInsertQuery
+use CrazyFactory\Utils\Base\SqlQuery;
+
+class SqlInsertQuery extends SqlQuery
 {
 
 	/**
 	 * @param array[] $data_list
 	 * @param string $table_name
-	 * @param string $table_primary_key
+	 * @param string|string[] $omit_keys A key or list of keys you want to ignore within the data.
 	 *
 	 * @return int
 	 * @throws \Exception
 	 */
-	protected function buildInsertQuery($table_name, $table_primary_key, $data_list)
+	public static function buildBulk($table_name, $data_list, $omit_keys = array())
 	{
 		// Return null on empty values
 		if (!$data_list) {
@@ -32,20 +34,21 @@ class SqlInsertQuery
 			throw new \Exception("Table name is required");
 		}
 
-		// Require valid primary key
-		if (!$table_primary_key || !is_string($table_primary_key)) {
-			throw new \Exception("Table primary key is required");
-		}
-
 		// Get all affected columns
 		$columns = Arrays::getElementKeys($data_list);
 
-		// Unset primary key (it probably exists, but should only contain null values anyway)
-		unset($columns[$table_primary_key]);
+		// Strip omitted keys from columns
+		$omit_keys = is_array($omit_keys) ? $omit_keys : array($omit_keys);
+		$columns = array_diff($columns, $omit_keys);
 
+		$columns_strings = $columns;
+		foreach ($columns_strings as &$column_string) {
+			$column_string = '`'.$column_string.'`';
+		}
 
 		// Build INSERT INTO ... VALUES clause
-		$sql = 'INSERT INTO `' . $table_name . '` (' . implode(', ', $columns) . ')';
+		$imploded = implode(', ', $columns_strings);
+		$sql = "INSERT INTO `$table_name` ($imploded)";
 
 		$data_list_values = [];
 		foreach ($data_list as $data) {
@@ -54,14 +57,14 @@ class SqlInsertQuery
 				if (!key_exists($column, $data)) {
 					throw new \Exception("missing data value for column '".$column."'");
 				}
-				$data_values[] = df_sqlval($data[$column]);
+				$data_values[] = self::escapeValue($data[$column]);
 			}
 			// Create inserted data set string
-			$data_list_values[] = ' (' . implode(', ', $data_values) . ')';
+			$data_list_values[] = '(' . implode(', ', $data_values) . ')';
 		}
 
 		// Append/Concat all data set strings
-		$sql .= ' VALUES' . implode(', ', $data_list_values);
+		$sql .= ' VALUES ' . implode(', ', $data_list_values) . ';';
 		return $sql;
 	}
 }

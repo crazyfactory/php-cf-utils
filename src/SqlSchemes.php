@@ -15,6 +15,16 @@ namespace CrazyFactory\Utils;
  */
 class SqlSchemes
 {
+	public static function isValidTableName($string) {
+		$pattern = "/^[a-zA-Z_][a-zA-Z0-9_]*$/";
+		return $string  && preg_match($pattern, $string);
+	}
+
+	public static function isValidColumnName($string) {
+		$pattern = "/^[a-zA-Z_][a-zA-Z0-9_]*$/";
+		return $string  && preg_match($pattern, $string);
+	}
+
 	public static function determineTableName($className)
 	{
 		// No string, no result!

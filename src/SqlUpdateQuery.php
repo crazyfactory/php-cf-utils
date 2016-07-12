@@ -9,36 +9,74 @@
 namespace CrazyFactory\Utils;
 
 
-class SqlUpdateQuery
+use CrazyFactory\Utils\Base\SqlQuery;
+
+class SqlUpdateQuery extends SqlQuery
 {
 	/**
-	 * @param array[] $pk_to_data_dic
-	 * @param string $table_name
-	 * @param string $table_primary_key
+	 * @param string  $table_name
+	 * @param string  $table_primary_key
+	 * @param array[] $data_list
+	 * @param bool    $treat_as_dictionary
 	 *
 	 * @return null|string Returns a query string or null if none of the models needs updating.
 	 * @throws \Exception
 	 */
-	public static function buildUpdateQuery($table_name, $table_primary_key, $pk_to_data_dic)
+	public static function buildBulk($table_name, $table_primary_key, $data_list, $treat_as_dictionary = false)
 	{
-		// Get all columns that will be updated
-		$columns = Arrays::getElementKeys($pk_to_data_dic);
+		// Require valid table name
+		if (!SqlSchemes::isValidTableName($table_name)) {
+			throw new \Exception('Table name invalid');
+		}
+		// Require valid table primary key
+		if (!SqlSchemes::isValidColumnName($table_primary_key)) {
+			throw new \Exception('Table primary key invalid');
+		}
+		// Data not array?
+		if ($data_list !== null && !is_array($data_list)) {
+			throw new \Exception('data_list must be array (or null)');
+		}
+		// Data empty
+		if ($data_list === null || empty($data_list)) {
+			return null;
+		}
+
+		// Remove falsy data items
+		$data_list = array_filter($data_list);
+
+		// Get all columns that will be updated (and remove the primary key)
+		$columns = Arrays::getElementKeys($data_list);
+		$columns = array_diff($columns, array($table_primary_key));
 		if (!$columns) {
 			return null;
 		}
 
-		// Don't allow changing of primary keys!
-		if (in_array($table_primary_key, $columns)) {
-			throw new \Exception('Tried changing a primary key');
+		// Gather and verify all primary keys
+		$primary_keys = array();
+		foreach ($data_list as $key => &$data) {
+
+			// In dictionary mode...
+			if ($treat_as_dictionary) {
+				// If key exists already ...
+				if (key_exists($table_primary_key, $data)) {
+					// ... but it's different from what we except
+					if ($data[$table_primary_key] !== $key) {
+						throw new \Exception('primary key mismatch');
+					}
+				}
+				else {
+					$data[$table_primary_key] = $key;
+				}
+			}
+
+			// Escape and add key to list
+			$primary_keys[] = self::escapeValue($data[$table_primary_key]);
 		}
 
-		// Get a list of all primary keys we need to touch
-		$primary_keys = array_keys($pk_to_data_dic);
-
 		// Build sql string
-		$sql = 'UPDATE ' . $table_name . ' SET ';
-		$sql .= implode(', ', self::buildUpdateQueryCases($columns, $table_primary_key, $pk_to_data_dic));
-		$sql .= ' WHERE ' . $table_primary_key . ' IN (' . implode(', ', $primary_keys) . ')' . "\n";
+		$sql = 'UPDATE `' . $table_name . '` SET ';
+		$sql .= implode(', ', self::buildBulkQueryCases($columns, $table_primary_key, $data_list));
+		$sql .= ' WHERE `' . $table_primary_key . '` IN (' . implode(', ', $primary_keys) . ');';
 
 		return $sql;
 	}
@@ -46,33 +84,33 @@ class SqlUpdateQuery
 	/**
 	 * @param string[] $columns
 	 * @param string   $table_primary_key
-	 * @param array[]  $pk_to_data_dic
+	 * @param array[]  $data_list
 	 *
 	 * @return array $cases
 	 */
-	private function buildUpdateQueryCases($columns, $table_primary_key, $pk_to_data_dic)
+	private static function buildBulkQueryCases($columns, $table_primary_key, $data_list)
 	{
 		$cases = [];
 
+		// Build clauses for all changed columns
 		foreach ($columns as $column) {
 
-			$case = $column . ' = CASE' . "\n";
+			$when_clauses = array();
 
-			foreach ($pk_to_data_dic as $primary_key => $data) {
-				if (empty($data) || !key_exists($column, $data)) { // todo: show dave difference between isset and key_exists.
-					continue;
+			// For all data sets
+			foreach ($data_list as $key => $data) {
+				// ... with the current column
+				if (key_exists($column, $data)) {
+					$when_clauses[] = 'WHEN  ' . $data[$table_primary_key] . ' THEN ' . self::escapeValue($data[$column]);
 				}
-
-				$case .= ' WHEN ' . $table_primary_key . ' = ' . $primary_key . ' THEN ' . df_sqlval($data[$column]) . "\n";
-
 			}
 
-			$case .= ' ELSE ' . $column . "\n";
-			$case .= ' END' . "\n";
-			$cases[] = $case;
+			// Add to list in correct format => `name` = CASE `id` THEN "Bob" ELSE `name` END
+			$cases[] = "`$column` = CASE `$table_primary_key` ".implode(' ', $when_clauses)." ELSE `$column` END";
 		}
 
 		return $cases;
 	}
 
 }
+
