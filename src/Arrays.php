@@ -12,21 +12,28 @@ namespace CrazyFactory\Utils;
 class Arrays
 {
 	/**
+	 * Creates a sorted list with all unique keys from all elements of a list.
+	 *
 	 * @param array[] $list
 	 *
 	 * @return string[]
 	 */
 	public static function getElementKeys($list)
 	{
+		// Gather all keys in a list
 		$keys = [];
 		foreach ($list as $item) {
+			// Skip null values
 			if ($item !== null) {
+				if (!is_array($item)) {
+					throw new \InvalidArgumentException('list item is not null or array');
+				}
 				$keys = array_merge($keys, array_keys($item));
 			}
 		}
 
+		// Clean up results
 		$keys = array_unique($keys);
-
 		sort($keys, SORT_STRING);
 
 		return $keys;
