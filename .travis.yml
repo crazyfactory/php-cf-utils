@@ -29,7 +29,9 @@ branches:
     - /^(.*\/)?ci-.*$/
 
 before_script:
-  - chmod +x /test/bin/*
+  - chmod +x test/bin/ci.bash
+  - chmod +x test/bin/phpcs.bash
+  - chmod +x test/bin/phpcbf.bash
   - travis_retry composer self-update
   - travis_retry composer update --prefer-dist
 
