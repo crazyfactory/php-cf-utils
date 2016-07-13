@@ -83,7 +83,7 @@ class SqlUpdateQuery extends SqlQuery
 	 */
 	private static function buildBulkQueryCases($columns, $table_primary_key, $data_list)
 	{
-		$cases = [];
+		$cases = array();
 
 		// Build clauses for all changed columns
 		foreach ($columns as $column) {

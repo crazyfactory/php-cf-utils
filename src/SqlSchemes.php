@@ -72,7 +72,7 @@ class SqlSchemes
 		// These suffices will be removed from the end of the string.
 		// if named properly even a Collection for Collections is ok,
 		// because it should be named 'Collections'.
-		$suffices = ['Collection', 'Set', 'Table'];
+		$suffices = array('Collection', 'Set', 'Table');
 
 		// Try to strip out first suffix found
 		foreach ($suffices as $suffix) {

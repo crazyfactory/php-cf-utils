@@ -45,9 +45,9 @@ class SqlInsertQuery extends SqlQuery
 		$imploded = implode(', ', $columns_strings);
 		$sql = "INSERT INTO `$table_name` ($imploded)";
 
-		$data_list_values = [];
+		$data_list_values = array();
 		foreach ($data_list as $data) {
-			$data_values = [];
+			$data_values = array();
 			foreach ($columns as $column) {
 				if (!key_exists($column, $data)) {
 					throw new \Exception("missing data value for column '" . $column . "'");

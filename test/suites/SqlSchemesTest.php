@@ -10,20 +10,20 @@ use CrazyFactory\Utils\SqlSchemes;
 class SqlSchemesTest extends \PHPUnit_Framework_TestCase
 {
 	public function providerForDetermineTableFromClassName() {
-		return [
-			[null, null],
-			['User', 'Users'],
-			['Users', 'Users'],
-			['UserCollection', 'Users'],
-			['UsersCollection', 'Users'],
-			['UserSet', 'Users'],
-			['UsersSet', 'Users'],
-			['UserTable', 'Users'],
-			['UsersTable', 'Users'],
-			['Sets', 'Sets'],
-			['Collections', 'Collections'],
-			['CrazyFactory\Core\Test\SampleCollection', 'Samples']
-		];
+		return array(
+			array(null, null),
+			array('User', 'Users'),
+			array('Users', 'Users'),
+			array('UserCollection', 'Users'),
+			array('UsersCollection', 'Users'),
+			array('UserSet', 'Users'),
+			array('UsersSet', 'Users'),
+			array('UserTable', 'Users'),
+			array('UsersTable', 'Users'),
+			array('Sets', 'Sets'),
+			array('Collections', 'Collections'),
+			array('CrazyFactory\Core\Test\SampleCollection', 'Samples')
+		);
 	}
 
 	/**
