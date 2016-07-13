@@ -40,13 +40,13 @@ class Arrays
 	}
 
 	/**
-	 * @param object[] $list
+	 * @param array $list
 	 * @param mixed $class
 	 * @param bool $allowNullElements
 	 *
 	 * @return bool
 	 */
-	public static function hasOnlyElementsOfClass($list, $class, $allowNullElements = true) {
+	public static function hasOnlyElementsOfClass($list, $class, $allowNullElements = false) {
 		if (!is_array($list)) {
 			throw new \InvalidArgumentException('list is not array');
 		}
