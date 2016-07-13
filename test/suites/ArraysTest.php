@@ -4,6 +4,14 @@ namespace CrazyFactory\Utils\Test;
 
 use CrazyFactory\Utils\Arrays;
 
+class Foo {
+
+}
+
+class Bar extends Foo {
+	
+}
+
 class ArraysTest extends \PHPUnit_Framework_TestCase
 {
 	public function provideForTestGetElementKeys() {
@@ -47,5 +55,49 @@ class ArraysTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testGetElementKeys($list, $expected) {
 		$this->assertEquals($expected, Arrays::getElementKeys($list));
+	}
+
+
+	public function provideFortTstHasOnlyElementsOfClass() {
+		return array(
+			array(
+				array(new Foo(), new Bar()),
+				false,
+				true
+			),
+			array(
+				array(new Foo(), null, new Bar()),
+				false,
+				false
+			),
+			array(
+				array(new Foo(), null, new Bar()),
+				true,
+				true,
+			),
+			array(
+				array(null),
+				true,
+				true
+			),
+			array(
+				array(),
+				false,
+				true
+			),
+			array(
+				array(17),
+				true,
+				false
+			)
+		);
+	}
+
+	/**
+	 * @dataProvider provideFortTstHasOnlyElementsOfClass
+	 */
+	public function testHasOnlyElementsOfClass($list, $allowNullElements, $expected) {
+		$result = Arrays::hasOnlyElementsOfClass($list, Foo::class, $allowNullElements);
+		$this->assertEquals($expected, $result);
 	}
 }

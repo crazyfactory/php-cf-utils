@@ -38,4 +38,24 @@ class Arrays
 
 		return $keys;
 	}
+
+	/**
+	 * @param object[] $list
+	 * @param mixed $class
+	 * @param bool $allowNullElements
+	 *
+	 * @return bool
+	 */
+	public static function hasOnlyElementsOfClass($list, $class, $allowNullElements = true) {
+		if (!is_array($list)) {
+			throw new \InvalidArgumentException('list is not array');
+		}
+		foreach ($list as $item) {
+			if (($item !== null && !($item instanceof $class)) || ($item === null && !$allowNullElements)) {
+				return false;
+			}
+		}
+
+		return true;
+	}
 }
