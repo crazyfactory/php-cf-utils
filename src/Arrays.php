@@ -21,7 +21,7 @@ class Arrays
 	public static function getElementKeys($list)
 	{
 		// Gather all keys in a list
-		$keys = [];
+		$keys = array();
 		foreach ($list as $item) {
 			// Skip null values
 			if ($item !== null) {
@@ -42,11 +42,12 @@ class Arrays
 	/**
 	 * @param array $list
 	 * @param mixed $class
-	 * @param bool $allowNullElements
+	 * @param bool  $allowNullElements
 	 *
 	 * @return bool
 	 */
-	public static function hasOnlyElementsOfClass($list, $class, $allowNullElements = false) {
+	public static function hasOnlyElementsOfClass($list, $class, $allowNullElements = false)
+	{
 		if (!is_array($list)) {
 			throw new \InvalidArgumentException('list is not array');
 		}
