@@ -60,7 +60,8 @@ class SqlSchemes
 
 		// Strip out namespace
 		if (strpos($tableName, '\\') != 0) {
-			$tableName = array_reverse(explode('\\', $tableName))[0];
+			$reversed_partials = array_reverse(explode('\\', $tableName));
+			$tableName = $reversed_partials[0];
 		}
 
 		// Is a valid (and code style compliant) class name?
