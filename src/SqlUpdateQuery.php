@@ -63,12 +63,12 @@ class SqlUpdateQuery extends SqlQuery
 			}
 
 			// Escape and add key to list
-			$primary_keys[] = self::escapeValue($data[$table_primary_key]);
+			$primary_keys[] = SqlQuery::escapeValue($data[$table_primary_key]);
 		}
 
 		// Build sql string
 		$sql = 'UPDATE `' . $table_name . '` SET ';
-		$sql .= implode(', ', self::buildBulkQueryCases($columns, $table_primary_key, $data_list));
+		$sql .= implode(', ', SqlUpdateQuery::buildBulkQueryCases($columns, $table_primary_key, $data_list));
 		$sql .= ' WHERE `' . $table_primary_key . '` IN (' . implode(', ', $primary_keys) . ');';
 
 		return $sql;

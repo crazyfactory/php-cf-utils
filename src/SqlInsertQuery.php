@@ -52,7 +52,7 @@ class SqlInsertQuery extends SqlQuery
 				if (!key_exists($column, $data)) {
 					throw new \Exception("missing data value for column '" . $column . "'");
 				}
-				$data_values[] = self::escapeValue($data[$column]);
+				$data_values[] = SqlQuery::escapeValue($data[$column]);
 			}
 			// Create inserted data set string
 			$data_list_values[] = '(' . implode(', ', $data_values) . ')';

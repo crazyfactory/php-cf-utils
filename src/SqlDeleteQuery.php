@@ -42,7 +42,7 @@ class SqlDeleteQuery extends SqlQuery
 
 		// Construct query
 		$primary_key_list_escaped = array_map(function($val) {
-			return self::escapeValue($val);
+			return SqlQuery::escapeValue($val);
 		}, $primary_key_list);
 
 		$sql = "DELETE FROM `$table_name` WHERE `$table_primary_key` IN (" . implode(', ', $primary_key_list_escaped) . ");";
