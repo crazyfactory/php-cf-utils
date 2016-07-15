@@ -5,7 +5,9 @@ namespace CrazyFactory\Utils\Test;
 use CrazyFactory\Utils\Arrays;
 
 class Foo {
-
+	public static function className() {
+		return get_called_class();
+	}
 }
 
 class Bar extends Foo {
@@ -97,7 +99,7 @@ class ArraysTest extends \PHPUnit_Framework_TestCase
 	 * @dataProvider provideFortTstHasOnlyElementsOfClass
 	 */
 	public function testHasOnlyElementsOfClass($list, $allowNullElements, $expected) {
-		$result = Arrays::hasOnlyElementsOfClass($list, Foo::class, $allowNullElements);
+		$result = Arrays::hasOnlyElementsOfClass($list, Foo::className(), $allowNullElements);
 		$this->assertEquals($expected, $result);
 	}
 }
