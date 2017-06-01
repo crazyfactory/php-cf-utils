@@ -1,6 +1,6 @@
 <?php
 
-namespace CrazyFactory\UtilsTests;
+namespace CrazyFactory\Utils\Tests;
 
 
 use CrazyFactory\Utils\Format;
