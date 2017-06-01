@@ -1,30 +1,14 @@
 language: php
 
-sudo: false
-
 matrix:
   include:
-  - php: 5.3
-  - php: 5.4
-  - php: 5.5
-  - php: 5.6
-  - php: 7.0
-    env: PROCESS_LINT=true
+  - php: 7.1
   - php: nightly
-  - php: hhvm
+
+  fast_finish: true
 
   allow_failures:
   - php: nightly
-  - php: 7.0
-
-branches:
-  only:
-    - master
-    - stable
-    - release
-    - staging
-    - dev
-    - /^(.*\/)?ci-.*$/
 
 before_script:
   - travis_retry composer self-update
@@ -32,11 +16,11 @@ before_script:
 
 script:
   - composer test
-  - if [ -n "$PROCESS_LINT" ]; then composer lint; fi
 
 cache:
   directories:
     - $HOME/.composer/cache
+
 notifications:
   slack:
     rooms:
