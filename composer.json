@@ -5,12 +5,6 @@
   "keywords": [],
   "homepage": "https://github.com/crazyfactory/php-utils",
   "license": "GPL-3.0+",
-  "authors": [
-    {
-      "name": "Wolf T. Mathes",
-      "homepage": "https://github.com/wmathes"
-    }
-  ],
   "autoload": {
     "psr-4": {
       "CrazyFactory\\Utils\\": "src/"
