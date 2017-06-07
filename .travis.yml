@@ -17,6 +17,14 @@ before_script:
 script:
   - composer test
 
+deploy:
+    provider: script
+    script: scripts/deploy.sh
+    skip_cleanup: false
+    on:
+      tags: true
+      condition: "$TRAVIS_PHP_VERSION = 7.1"
+
 cache:
   directories:
     - $HOME/.composer/cache
