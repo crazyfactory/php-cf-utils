@@ -30,8 +30,4 @@ cache:
     - $HOME/.composer/cache
 
 notifications:
-  slack:
-    rooms:
-      - crazyfactory:$SLACK_API_KEY#dev-noise
-      - crazyfactory:$SLACK_API_KEY#travis
-    on_start: always
+    slack: crazyfactory:Z3NJKlj5jdPOE1YrjPPyDPKb
