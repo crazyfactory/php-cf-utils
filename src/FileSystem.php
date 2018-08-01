@@ -6,7 +6,7 @@ class FileSystem
 {
 
     /**
-     * Recursively removes files and directories
+     * Remove files and directories recursively
      *
      * @param string $path
      * @return bool
@@ -30,7 +30,7 @@ class FileSystem
     }
 
     /**
-     * Creates a directory recursively and sets directory permissions to 777
+     * Create a directory recursively
      *
      * @param string $path
      * @param int $permissions
