@@ -36,7 +36,7 @@ class FileSystem
      * @param int $permissions
      * @return bool
      */
-    public static function mkdir(string $path, $permissions = 777): bool
+    public static function mkdir(string $path, $permissions = 0777): bool
     {
         if (file_exists($path)) {
             return true;
